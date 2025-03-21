@@ -11,8 +11,24 @@ export interface LineItem extends Menu {
     quantity: number;
 }
 
+export interface Cart {
+  lineItems: LineItem[];
+}
+
+export interface CheckoutItem {
+    id: string;
+    price: number;
+    quantity: number;
+}
+
+export interface CheckoutForm {
+    username: string;
+    password: string;
+    items: Cart
+}
+
 export interface CheckoutDetails {
     username: string;
     password: string;
-    items: Menu[]
+    items: CheckoutItem[];
 }

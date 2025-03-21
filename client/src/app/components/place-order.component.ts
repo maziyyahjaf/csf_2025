@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Cart, CartService } from '../services/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CheckoutDetails, CheckoutForm } from '../models';
 
 @Component({
   selector: 'app-place-order',
@@ -52,5 +53,31 @@ export class PlaceOrderComponent implements OnInit{
     this.cartService.resetCart();
     this.router.navigate([""]);
   }
+
+  processCheckoutForm() {
+    const formValues: CheckoutForm = {
+      username: this.checkoutForm.get('username')?.value,
+      password: this.checkoutForm.get('password')?.value,
+      items: this.checkoutForm.get('items')?.value
+    }
+
+    console.log(formValues)
+    // need to transform from CheckoutForm to CheckoutDetails
+    const targetData = this.fromCheckoutFormToCheckoutDetails(formValues);
+    console.log(targetData);
+    
+
+
+  } 
+
+  fromCheckoutFormToCheckoutDetails(formdata: CheckoutForm): CheckoutDetails {
+    return {
+      username: formdata.username,
+      password: formdata.password,
+      items: formdata.items.lineItems
+    }
+  }
+
+  
 
 }

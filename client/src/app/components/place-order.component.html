@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<form [formGroup]="checkoutForm">
+<form [formGroup]="checkoutForm" (submit)="processCheckoutForm()">
   <div class="row mb-2">
     <div class="col">
       <label for="username" class="form-label">Username</label>
