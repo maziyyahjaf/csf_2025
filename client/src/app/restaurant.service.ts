@@ -1,6 +1,6 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Menu } from "./models";
+import { CheckoutDetails, Menu } from "./models";
 
 // call the backend for the menus
 @Injectable({
@@ -17,4 +17,14 @@ export class RestaurantService {
   }
 
   // TODO: Task 3.2
+  // submit order to backend
+  placeOrder(order: CheckoutDetails) {
+    console.log("sending order to backend", order);
+    const httpHeaders = new HttpHeaders()
+                          .set("Content-Type", "application/json")
+                          .set("Accept", "appliction/json")
+    return this.http.post('/api/food_order', order, {headers: httpHeaders})
+
+  }
+
 }
