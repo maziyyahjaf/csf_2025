@@ -1,2 +1,4 @@
 # TODO: Task 1.1
 mongoimport --db=restaurant --collection=menus --file=menus.json --jsonArray --type=json 
+
+mongoimport --db=restaurant --collection=menus --file=menus.json --jsonArray --type=json --uri="mongodb://mongo:fbvLFjItMqFIHnNrStvaSshnsyVjrrac@turntable.proxy.rlwy.net:25569/?authSource=admin"
