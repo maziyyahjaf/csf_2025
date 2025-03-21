@@ -3,6 +3,7 @@ import { Cart, CartService } from '../services/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CheckoutDetails, CheckoutForm, CheckoutItem } from '../models';
+import { RestaurantService } from '../restaurant.service';
 
 @Component({
   selector: 'app-place-order',
@@ -27,6 +28,7 @@ export class PlaceOrderComponent implements OnInit{
   checkoutForm!: FormGroup;
 
   router = inject(Router);
+  restaurantService = inject(RestaurantService);
 
   ngOnInit(): void {
     this.checkoutForm= this.createCheckoutForm();
@@ -65,6 +67,19 @@ export class PlaceOrderComponent implements OnInit{
     // need to transform from CheckoutForm to CheckoutDetails
     const targetData = this.fromCheckoutFormToCheckoutDetails(formValues);
     console.log(targetData);
+
+    // call the restaurant service
+    this.restaurantService.placeOrder(targetData).subscribe({
+      next: (data: any) => {
+        console.log(data);
+      },
+      error: (error) => {
+        console.error(error.message);
+        const errorMessage = error.error?.message || "Invalid username and/ or password.";
+        alert(errorMessage);
+      }
+    })
+    
     
 
 

@@ -22,7 +22,7 @@ export class RestaurantService {
     console.log("sending order to backend", order);
     const httpHeaders = new HttpHeaders()
                           .set("Content-Type", "application/json")
-                          .set("Accept", "appliction/json")
+                          .set("Accept", "application/json")
     return this.http.post('/api/food_order', order, {headers: httpHeaders})
 
   }
