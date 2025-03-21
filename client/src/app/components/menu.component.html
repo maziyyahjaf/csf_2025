@@ -1,6 +1,6 @@
 <div class="row mt-3">
   <div class="col d-flex justify-content-between align-items-center">
-    <div class="fs-1 fw-bold text-primary">Menu ($XXX)</div>
+    <div class="fs-1 fw-bold text-primary">Menu ({{currentCartTotal$ | async | currency}})</div>
     <div>
       <button type="button" class="btn btn-primary">
         Place Order (XXX)
@@ -17,7 +17,7 @@
       <div class="col">
         <div class="menu-item">
           <div>
-            <button type="button" class="btn btn-warning">
+            <button type="button" class="btn btn-warning" (click)="remove(m)">
               <i class="bi bi-x-square"></i>
             </button>
           </div>
@@ -28,11 +28,12 @@
                 {{m.description}}
               </span>
             </div>
+            <div>Price: <span>{{m.price | currency}}</span></div>
             <div></div>
               <div class="text-danger fw-bold">Quantity: XXX</div>
           </div>
           <div class="menu-button-end">
-            <button type="button" class="btn btn-success">
+            <button type="button" class="btn btn-success" (click)="add(m)">
               <i class="bi bi-plus-circle"></i>
             </button>
           </div>
@@ -65,9 +66,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     
-   -->
+  
   
   }
 }

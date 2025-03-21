@@ -5,3 +5,8 @@ export interface Menu {
     description: string;
     price: number;
 }
+
+export interface LineItem extends Menu {
+    totalPrice: number;
+    quantity: number;
+}
