@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Cart, CartService } from '../services/cart.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-place-order',
@@ -24,6 +25,8 @@ export class PlaceOrderComponent implements OnInit{
   fb = inject(FormBuilder);
   checkoutForm!: FormGroup;
 
+  router = inject(Router);
+
   ngOnInit(): void {
     this.checkoutForm= this.createCheckoutForm();
     this.currentCart$.subscribe((cart) => {
@@ -38,11 +41,16 @@ export class PlaceOrderComponent implements OnInit{
 
   createCheckoutForm(): FormGroup {
     return this.fb.group({
-      username: this.fb.control<string>(''),
-      password: this.fb.control<string>(''),
+      username: this.fb.control<string>('', [Validators.required]),
+      password: this.fb.control<string>('', [Validators.required]),
       items: this.fb.control<Cart>({lineItems: []}),
       checkoutTotal: this.fb.control<number>(0)
     })
+  }
+
+  return() {
+    this.cartService.resetCart();
+    this.router.navigate([""]);
   }
 
 }

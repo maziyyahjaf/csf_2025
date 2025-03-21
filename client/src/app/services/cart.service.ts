@@ -96,5 +96,12 @@ export class CartService {
       this.currentNumberOfItemsInCart.next(numberOfItems);
     }
 
+    resetCart() {
+      this.cart = {lineItems: []}
+      this.currentCart.next(this.cart);
+      this.calculateCheckoutTotal();
+      this.updatedNumItemsInCart();
+    }
+
 
 }
