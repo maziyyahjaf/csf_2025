@@ -10,3 +10,9 @@ export interface LineItem extends Menu {
     totalPrice: number;
     quantity: number;
 }
+
+export interface CheckoutDetails {
+    username: string;
+    password: string;
+    items: Menu[]
+}

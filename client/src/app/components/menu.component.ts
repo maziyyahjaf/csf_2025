@@ -3,6 +3,7 @@ import { RestaurantService } from '../restaurant.service';
 import { Observable } from 'rxjs';
 import { Menu } from '../models';
 import { Cart, CartService } from '../services/cart.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -24,6 +25,9 @@ export class MenuComponent implements OnInit {
   currentCartTotal$ = this.cartService.currentCartTotal$;
   currentNumOfItemsIncart$ = this.cartService.currentNumberOfItemsInCart$;
 
+  router = inject(Router);
+
+
 
 
   ngOnInit(): void {
@@ -43,6 +47,14 @@ export class MenuComponent implements OnInit {
 
   remove(item: Menu) {
     this.cartService.removeItem(item);
+  }
+
+  valid(): boolean {
+    return !(this.cart.lineItems.length > 0)
+  }
+
+  placeOrder() {
+    this.router.navigate(['order']);
   }
  
 }
