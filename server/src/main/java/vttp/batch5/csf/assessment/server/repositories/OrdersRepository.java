@@ -1,6 +1,7 @@
 package vttp.batch5.csf.assessment.server.repositories;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
@@ -12,7 +13,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import vttp.batch5.csf.assessment.server.models.LineItem;
 import vttp.batch5.csf.assessment.server.models.Menu;
+import vttp.batch5.csf.assessment.server.models.PaymentDetails;
+import vttp.batch5.csf.assessment.server.models.ValidUser;
 
 
 @Repository
@@ -53,5 +57,43 @@ public class OrdersRepository {
   // Write the native MongoDB query for your access methods in the comment below
   //
   //  Native MongoDB query here
+
+  public void saveOrderAndPaymentDetails(PaymentDetails paymentDetails, ValidUser user, List<LineItem> lineItems, double checkoutTotal) {
+    // save to mongo
+    String _id = paymentDetails.getOrder_id();
+    String order_id = paymentDetails.getOrder_id();
+    long timestamp = paymentDetails.getTimestamp();
+    Date date = new Date(timestamp);
+
+    String username = user.getUsername();
+
+    List<Document> documentList = new ArrayList<>();
+    
+    for (LineItem item: lineItems) {
+      Document doc = toDocument(item);
+      documentList.add(doc);
+    }
+
+
+    Document newDoc = new Document()
+                        .append("_id", _id)
+                        .append("order_id", order_id)
+                        .append("username", username)
+                        .append("timestamp", date)
+                        .append("items", documentList);
+    
+    mongoTemplate.insert(newDoc, "orders");
+
+
+
+  }
+
+  public Document toDocument(LineItem item) {
+    Document doc = new Document()
+                    .append("id", item.getId())
+                    .append("price", item.getPrice())
+                    .append("quantity", item.getQuantity());
+    return doc;
+  }
   
 }
