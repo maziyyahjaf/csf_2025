@@ -57,6 +57,16 @@ public class OrdersRepository {
   // Write the native MongoDB query for your access methods in the comment below
   //
   //  Native MongoDB query here
+  /*
+   *  db.orders.insert({
+   *    "_id": "abcd1234",
+   *    "order_id": "abcd1234",
+   *    "payment_id": "xyz789",
+   *     "username": 
+   * 
+   * 
+   * })
+   */
 
   public void saveOrderAndPaymentDetails(PaymentDetails paymentDetails, ValidUser user, List<LineItem> lineItems, double checkoutTotal) {
     // save to mongo

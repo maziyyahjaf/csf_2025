@@ -97,9 +97,18 @@ public class RestaurantController {
     PaymentDetails paymentDetails = paymentService.makePayment(orderId, checkoutTotal, username);
     restaurantService.saveOrderAndPaymentDetails(paymentDetails, user, lineItems, checkoutTotal);
 
+    // create the succesful payload
+    JsonObject jsonObject = Json.createObjectBuilder()
+                              .add("orderId", paymentDetails.getOrder_id())
+                              .add("paymentId", paymentDetails.getPayment_id())
+                              .add("total", String.valueOf(checkoutTotal))
+                              .add("timestamp", String.valueOf(paymentDetails.getTimestamp()))
+                              .build();
 
 
-    return ResponseEntity.ok("{}");
+
+
+    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonObject.toString());
   }
 
   private double getTotalSumForEachItem(LineItem item) {
