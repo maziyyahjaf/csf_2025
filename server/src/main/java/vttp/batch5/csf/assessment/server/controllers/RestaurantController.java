@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,9 +21,11 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import vttp.batch5.csf.assessment.server.services.PaymentService;
 import vttp.batch5.csf.assessment.server.services.RestaurantService;
 import vttp.batch5.csf.assessment.server.utils.Utils;
 import vttp.batch5.csf.assessment.server.models.Menu;
+import vttp.batch5.csf.assessment.server.models.PaymentDetails;
 import vttp.batch5.csf.assessment.server.exceptions.InvalidPasswordException;
 import vttp.batch5.csf.assessment.server.models.LineItem;
 import vttp.batch5.csf.assessment.server.models.ValidUser;
@@ -34,6 +37,9 @@ public class RestaurantController {
 
   @Autowired
   private RestaurantService restaurantService;
+
+  @Autowired
+  private PaymentService paymentService;
 
   // TODO: Task 2.2
   // You may change the method's signature
@@ -84,8 +90,19 @@ public class RestaurantController {
       throw new InvalidPasswordException("Invalid password");
     }
     // place order
-    
+
+    String orderId = UUID.randomUUID().toString().substring(0, 9);
+    // need to get the total of the line items
+    double checkoutTotal = lineItems.stream().mapToDouble(item -> getTotalSumForEachItem(item)).sum();
+    PaymentDetails paymentDetails = paymentService.makePayment(orderId, checkoutTotal, username);
+
+
 
     return ResponseEntity.ok("{}");
+  }
+
+  private double getTotalSumForEachItem(LineItem item) {
+    double totalSum = item.getPrice() * item.getQuantity();
+    return totalSum;
   }
 }

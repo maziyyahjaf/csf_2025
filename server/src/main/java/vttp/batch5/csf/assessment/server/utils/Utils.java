@@ -12,6 +12,9 @@ public class Utils {
         String id = jsonObject.getString("id");
         double price = jsonObject.getJsonNumber("price").doubleValue();
         int quantity = jsonObject.getInt("quantity");
+        lineItem.setId(id);
+        lineItem.setPrice(price);
+        lineItem.setQuantity(quantity);
 
         return lineItem;
     }

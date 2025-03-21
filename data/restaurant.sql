@@ -26,11 +26,12 @@ insert into customers(username, password) values
 create table place_orders(
   order_id char(8) not null,
   payment_id varchar(128) not null,
-  order_date date not null,
+  order_date DATE DEFAULT (CURRENT_DATE) not null,
   total double not null,
   username varchar(64) not null,
 
-  constraint place_orders_total check (total < 999999.99)
+  constraint place_orders_total check (total < 999999.99),
+  CONSTRAINT unique_payment_id UNIQUE(payment_id)
 );
 
 grant all privileges on restaurant.* to 'fred'@'%';

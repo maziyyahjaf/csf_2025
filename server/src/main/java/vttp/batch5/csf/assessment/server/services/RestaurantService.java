@@ -7,10 +7,13 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.xml.bind.DatatypeConverter;
 import vttp.batch5.csf.assessment.server.models.Menu;
 import vttp.batch5.csf.assessment.server.models.ValidUser;
 import vttp.batch5.csf.assessment.server.repositories.OrdersRepository;
@@ -18,6 +21,8 @@ import vttp.batch5.csf.assessment.server.repositories.RestaurantRepository;
 
 @Service
 public class RestaurantService {
+
+  private static final Logger logger = LoggerFactory.getLogger(RestaurantService.class);
 
   @Autowired
   private OrdersRepository ordersRepository;
@@ -44,9 +49,13 @@ public class RestaurantService {
     MessageDigest digest = MessageDigest.getInstance("SHA-256");
     byte[] byteOfPasswordToHash = password.getBytes(StandardCharsets.UTF_8);
     byte[] hashedByteArray = digest.digest(byteOfPasswordToHash);
-    String encoded = Base64.getEncoder().encodeToString(hashedByteArray);
+    // String encoded = Base64.getEncoder().encodeToString(hashedByteArray);
+    String encoded = DatatypeConverter.printHexBinary(hashedByteArray);
 
     String savedPassword = user.getHashPassword();
+    logger.info("saved password: {}", savedPassword);
+
+    logger.info("hashed password: {}", encoded);
 
     if (encoded.equals(savedPassword)) {
       return true;
