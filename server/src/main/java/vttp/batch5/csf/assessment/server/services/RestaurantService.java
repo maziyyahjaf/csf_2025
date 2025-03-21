@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.xml.bind.DatatypeConverter;
+import vttp.batch5.csf.assessment.server.models.LineItem;
 import vttp.batch5.csf.assessment.server.models.Menu;
+import vttp.batch5.csf.assessment.server.models.PaymentDetails;
 import vttp.batch5.csf.assessment.server.models.ValidUser;
 import vttp.batch5.csf.assessment.server.repositories.OrdersRepository;
 import vttp.batch5.csf.assessment.server.repositories.RestaurantRepository;
@@ -62,7 +64,13 @@ public class RestaurantService {
     }
 
     return false;
-    
+  }
+
+  public void saveOrderAndPaymentDetails(PaymentDetails paymentDetails, ValidUser user, List<LineItem> lineItems, double checkoutTotal) {
+
+    // save to sql
+    String username = user.getUsername();
+    restaurantRepository.saveOrder(paymentDetails, username, checkoutTotal);
   }
 
 

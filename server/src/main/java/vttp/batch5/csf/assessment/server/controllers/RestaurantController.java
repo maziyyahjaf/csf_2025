@@ -95,6 +95,7 @@ public class RestaurantController {
     // need to get the total of the line items
     double checkoutTotal = lineItems.stream().mapToDouble(item -> getTotalSumForEachItem(item)).sum();
     PaymentDetails paymentDetails = paymentService.makePayment(orderId, checkoutTotal, username);
+    restaurantService.saveOrderAndPaymentDetails(paymentDetails, user, lineItems, checkoutTotal);
 
 
 
