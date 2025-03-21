@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Cart, CartService } from '../services/cart.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CheckoutDetails, CheckoutForm } from '../models';
+import { CheckoutDetails, CheckoutForm, CheckoutItem } from '../models';
 
 @Component({
   selector: 'app-place-order',
@@ -74,8 +74,15 @@ export class PlaceOrderComponent implements OnInit{
     return {
       username: formdata.username,
       password: formdata.password,
-      items: formdata.items.lineItems
+      items: this.fromMenuItemToCheckOutItem(formdata)
     }
+  }
+
+  fromMenuItemToCheckOutItem(formdata: CheckoutForm): CheckoutItem[] {
+    const items = formdata.items.lineItems;
+    const newArray = items.map(x => ({id: x.id, price: x.price, quantity: x.quantity}))
+    return newArray;
+    
   }
 
   
